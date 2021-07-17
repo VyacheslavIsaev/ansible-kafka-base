@@ -1,0 +1,52 @@
+---
+# downlaod_kafka tasks file for kafka-base
+- name: Checking if Kafka archive present
+  stat:
+    path: "{{kafka_tmp_path}}/{{kafka_tar_full}}"
+  register: kafka_archive_details
+
+- name: Downloading Kafka archive
+  get_url:
+    url:  "{{kafka_tar_uri}}"
+    dest: "{{kafka_tmp_path}}"  
+    mode: 0440
+  when: not kafka_archive_details.stat.exists
+  tags: [ "kafka-base" ]
+
+- name: Checking if KEYS present
+  stat:
+    path: "{{kafka_tmp_path}}/KEYS"
+  register: keys_details
+
+- name: Downloading KEYS
+  get_url:
+    url:  "{{kafka_keys_uri}}"
+    dest: "{{kafka_tmp_path}}"
+    mode: 0440
+  tags: [ "kafka-base" ]
+  when: not keys_details.stat.exists
+
+- name: Checking if asc present
+  stat:
+    path: "{{kafka_tmp_path}}/{{kafka_asc}}"
+  register: asc_details
+
+- name: Downloading Kafka signature
+  get_url:
+    url:  "{{kafka_asc_uri}}"
+    dest: "{{kafka_tmp_path}}"
+    mode: 0440
+  tags: [ "kafka-base" ]
+  when: not asc_details.stat.exists
+
+- name: Importing Keys
+  command: gpg --import KEYS            
+  args:
+    chdir: "{{kafka_tmp_path}}"
+  tags: [ "kafka-base" ]
+
+- name: Verifying Archive Signature
+  command: gpg --verify "{{ kafka_asc }}" "{{ kafka_tar_full }}"
+  args:
+    chdir: "{{kafka_tmp_path}}"
+  tags: [ "kafka-base" ]

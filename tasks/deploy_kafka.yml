@@ -1,0 +1,18 @@
+---
+- include_tasks: download_kafka.yml
+  when: kafka_tar_local == ""
+
+- name: Copying local tar
+  copy:
+    src: "{{kafka_tar_local}}"
+    dest: "{{kafka_tmp_path}}"
+  when: kafka_tar_local != ""
+
+- name: Checking if archive exists
+  stat:
+    path: "{{kafka_tmp_path}}/{{kafka_tar_full}}"
+  register: kafka_tmp
+  failed_when: not kafka_tmp.stat.exists
+
+- include_tasks: unpack_kafka.yml
+  when: kafka_tmp.stat.exists

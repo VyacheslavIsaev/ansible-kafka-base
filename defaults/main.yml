@@ -1,0 +1,12 @@
+---
+# defaults file for kafka-base
+kafka_tmp_path: /tmp
+kafka_root: /opt
+kafka_path: /opt/kafka
+kafka_tar_full: kafka_2.13-2.8.0.tgz
+kafka_asc: kafka_2.13-2.8.0.tgz.asc
+kafka_tar_name: kafka_2.13-2.8.0
+kafka_tar_local: ""
+kafka_tar_uri: https://downloads.apache.org/kafka/2.8.0/kafka_2.13-2.8.0.tgz
+kafka_keys_uri: https://downloads.apache.org/kafka/KEYS
+kafka_asc_uri: https://downloads.apache.org/kafka/2.8.0/kafka_2.13-2.8.0.tgz.asc

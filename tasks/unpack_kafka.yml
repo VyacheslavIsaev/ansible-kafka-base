@@ -1,0 +1,38 @@
+---
+- name: Installing Kafka dependencies
+  apt: 
+    name: ['wget', 'net-tools', 'netcat', 'tar', 'openjdk-8-jdk', 'gnupg']
+    state: present
+    update_cache: yes  
+  tags: [ "packages", "base" ]
+
+- name: Extracting Kafka
+  unarchive:
+    src:  "{{kafka_tmp_path}}/{{ kafka_tar_full }}"
+    dest: "{{kafka_root}}"
+    copy: no
+  tags: [ "kafka-base" ]
+
+- name: Creating a symbolic link
+  ansible.builtin.file:
+    src: "{{kafka_root}}/{{kafka_tar_name}}"
+    dest: "{{kafka_path}}"
+    state: link
+    # owner: slava
+    # group: slava
+
+- name: Removing files
+  file:
+    path: "{{kafka_tmp_path}}/{{item}}"
+    state: absent
+  with_items:
+      - kafka_2.13-2.8.0.tgz 
+      - KEYS 
+      - kafka_2.13-2.8.0.tgz.asc
+  tags: [ "kafka-base" ]
+    
+- name: Adding Kafka to PATH
+  template:
+    src: kafka.sh
+    dest: /etc/profile.d
+    mode: 0755

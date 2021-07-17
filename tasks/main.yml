@@ -1,0 +1,37 @@
+---
+# tasks file for kafka-base
+- name: Checking if kafka already installed
+  stat:
+    path: "{{ kafka_path }}"
+  register: kafka_details
+
+- include_tasks: deploy_kafka.yml
+  when: not kafka_details.stat.exists
+
+- name: Twicking performance
+  command: sysctl vm.swappiness=1
+
+- name : Twicking performance on reboot
+  lineinfile:
+    path: /etc/sysctl.conf
+    line: vm.swappiness=1
+    state: present
+    backup: True
+
+- name: Configuring soft nofiles
+  lineinfile:
+    path: /etc/security/limits.conf
+    line: "* soft nofile 100000"
+    state: present
+    backup: True
+
+- name: Configuring hard nofiles
+  lineinfile:
+    path: /etc/security/limits.conf
+    line: "* hard nofile 100000"
+    state: present
+    backup: True
+
+- name: Rebooting server to apply performance tweeks
+  reboot:
+    reboot_timeout: 3600
