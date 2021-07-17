@@ -1,31 +1,40 @@
-Role Name
+Kafka base
 =========
 
-A brief description of the role goes here.
+An ansible role which helps to download and unpack Kafka base.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+kafka_root:      - root folder folder 
+kafka_path:      - kafka path to install
+kafka_tar_full:  - full name of kafka tar file
+kafka_asc:       - full name of ASC file
+kafka_tar_name:  - name of the file without extension
+kafka_tar_local: - specifies local path to tar file if installed from local source
+kafka_tar_uri:   - URI from where to downlaod tar file
+kafka_keys_uri:  - URI from where to downlaod KEY
+kafka_asc_uri:   - URI from where to downlaod ASC file
+kafka_tmp_path:  - temporal place to where to download files
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None
 
 Example Playbook
 ----------------
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
+    - hosts: brokers
       roles:
-         - { role: username.rolename, x: 42 }
+         - ViacheslavIsaev.kafka-broker
 
 License
 -------
@@ -35,4 +44,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Viacheslav Isaev has two decades of experience of distributed high payload systems development. He has been in charge of developing control systems for safety-critical facilities like railroads and particle accelerators, high-payload event processing systems for cybersecurity and mobile access points, introducing in house CI/CD practices. His hands-on experience incldues all stages of IT solutions development and operation. Vyacheslav’s interests lays in automation spectr either it is pure software or hardware-software solutions. Vyacheslav defines the key to success in 3 pillars  Domain Driven Design, Behavioral Driven and Test-Driven Development, which are standing on the foundation of  Object Oriented Design and Clean Code practices.
